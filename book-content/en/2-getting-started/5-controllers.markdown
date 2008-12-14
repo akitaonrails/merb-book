@@ -1,37 +1,213 @@
-#Controllers
+# Controllers
 
-In the [MVC][] Framework controllers are the glue layer that connects the
-business logic of the Model with the appropriate View templates to respond to
-generate a response.
-In Merb controllers are implemented classes that inherit form Merb::Controller.
-In most applications a single class called 'Application' is created
-as a place to hold application wide setup.
-Controllers are then formed as child classes of Application.
+* This will become a table of contents (this text will be scraped).
+{:toc}
 
-Controllers are instantiated directly by the Merb Framework.
-The [Router][] logic in Merb chooses a controller and an action
-based on the information about the incoming request.
-An instance of the controller is created for each request
-and a method is called based on the action.
-The return value of this call becomes the body of the HTML Response.
-(c.f. Rack)
+> A controller is the link between a user and the system. 
+> It provides the user with input by  arranging for relevant views to present
+> themselves in appropriate places on the screen.<!-- break -->  
+> It provides means for user output by presenting the user with menus or other
+> means of giving commands and data.<!-- break -->  
+> The controller receives such user output, translates it into the appropriate
+> messages and pass these messages onto one or more of the views. <!-- break -->  
+> - [Trygve Reenskaug][]{: .quote-author}, author of the model-view-controller
+> pattern design[^mvc-essay]
+{: cite=http://heim.ifi.uio.no/~trygver/1979/mvc-2/1979-12-MVC.pdf .lead-quote}
 
-In this chapter we will look at
-how organize controllers using two of thecommon controller styles,
-discuss how to write the methods that are called be the framework on a controller,
-and how to extend the functionality of a controller
-using filter, inheritance and private methods.
 
-##Controller Styles
+In the [MVC][] paradigm, controllers represent the glue layer that connects the
+business logic (Model) with the View.
 
-There are two standard ways to create controllers.
-The first is based on the default Merb routing.
-The second is based on a RESTful (#need reference) Resource model.
+Concretely, the controller is responsible for mapping an end-user action to 
+an application response.
 
-###The Default Routing Style
+In Merb, technically speaking, controllers are classes inheriting from 
+``Merb::Controller``.
+In a Merb stack app, a controller class called ``Application`` is created.
+All generated controllers will inherit from ``Application`` and therefore
+share the same attributes as ``Application``.
+
+The [Router][] logic in Merb finds a controller and an action to send the
+request to while taking in consideration the incoming request details.
+
+In this chapter we will look at how to generate and organize controllers.
+We will also discuss how to write **actions**;
+the methods that are called on a controller.
+Finally, we will look at how to extend the functionalities of a controller.
+
+## Generating controllers
+
+You can generate two types of controllers.
+A standard controller and a [RESTful][] controller.
+
+### A standard controller
+
+    $ merb-gen controller birds
+      [ADDED]  app/controllers/birds.rb
+      [ADDED]  app/views/birds/index.html.erb
+      [ADDED]  spec/requests/birds_spec.rb
+      [ADDED]  app/helpers/birds_helper.rb
+{:lang=shell html_use_syntax=true}
+  
+The command above will generate a controller with an ``index action`` and 
+an ``index view`` (template).
+
+Let's quickly look at the generated controller:
+
+    class Birds < Application
+
+      def index
+        render
+      end
+
+    end
+{:lang=ruby html_use_syntax=true}
+
+The generator added a new class called ``Birds`` inheriting from ``Application``.
+The new class has one method called index. In the context of a controller, we will
+often refer to these methods as ``controller actions`` or simply ``actions``.
+
+
+Remember what we said earlier? 
+
+``Application`` is the controller class from which all controller usually inherits and ``Application`` is just a subclass of ``Merb::Controller`` and a convenient way
+to share code between controllers.<!-- break added on purpose -->  
+(_use with care_)
+
+
++-- {: .notes}
+  If you realized you made a mistake when generating your controller,
+you can delete the generated controller by appending ``-d`` at the
+end of the command you just sent:
+
+      $ merb-gen controller birds -d
+        [DELETED]  app/controllers/birds.rb
+        [DELETED]  app/views/birds/index.html.erb
+        [DELETED]  spec/requests/birds_spec.rb
+        [DELETED]  app/helpers/birds_helper.rb
+  {:lang=shell html_use_syntax=true}
+=--
+
+### A REStful controller
+
+    $ merb-gen resource_controller cats
+      [ADDED]  spec/requests/cats_spec.rb
+      [ADDED]  app/controllers/cats.rb
+      [ADDED]  app/views/cats/index.html.erb
+      [ADDED]  app/views/cats/show.html.erb
+      [ADDED]  app/views/cats/edit.html.erb
+      [ADDED]  app/views/cats/new.html.erb
+      [ADDED]  app/helpers/cats_helper.rb
+{:lang=shell html_use_syntax=true}
+
+If you open the newly generated controller file (``app/controllers/cats.rb``)
+you will notice that the generator created a new class called ``Cats``.
+As expected, the class inherits from Application.
+However, this time, instead of an empty index action, we find 7 fully defined
+actions.
+
+Let's look at the generated file:
+
+    class Cats < Application
+      # provides :xml, :yaml, :js
+
+      def index
+        @cats = Cat.all
+        display @cats
+      end
+
+      def show(id)
+        @cat = Cat.get(id)
+        raise NotFound unless @cat
+        display @cat
+      end
+
+      def new
+        only_provides :html
+        @cat = Cat.new
+        display @cat
+      end
+
+      def edit(id)
+        only_provides :html
+        @cat = Cat.get(id)
+        raise NotFound unless @cat
+        display @cat
+      end
+
+      def create(cat)
+        @cat = Cat.new(cat)
+        if @cat.save
+          redirect resource(@cat), :message => {:notice => "Cat was successfully created"}
+        else
+          message[:error] = "Cat failed to be created"
+          render :new
+        end
+      end
+
+      def update(id, cat)
+        @cat = Cat.get(id)
+        raise NotFound unless @cat
+        if @cat.update_attributes(cat)
+           redirect resource(@cat)
+        else
+          display @cat, :edit
+        end
+      end
+
+      def destroy(id)
+        @cat = Cat.get(id)
+        raise NotFound unless @cat
+        if @cat.destroy
+          redirect resource(:cats)
+        else
+          raise InternalServerError
+        end
+      end
+
+    end # Cats
+{:lang=ruby html_use_syntax=true}
+
+
+Wow, that's a lot code.
+As a rule of thumb, you should **not** use generated code you don't understand.
+Luckily, the code above is pretty simple to understand and we'll go through in 
+great details
+
+But before we dig into the code, let's talk about [REST][].
+
+## REST
+
+[REST][] is an acronym for [Representational State Transfer][].
+It was first introduced in 2000 by [Roy Fielding][][^rest\_intro].
+REST refers to a software architectural style outlining how [resources][] are defined and addressed.
+So, the center piece of REST are [resources][].
+
+**What is a resource in the context of REST?**
+
+A resource is a source of specific information referenced by a URI (global identifier).
+In lay terms, it's some information you can access via a specific address.
+REST uses the HTTP protocol to communicate data between the different actors.
+It's often used for web services since its principles apply very well to web resources.
+
+**Here is how people usually map REST web resources:**
+
+``URI:``      http://site.com/cats or http://site.com/cats/1-felix  (global identifier/address)<!-- break -->  
+``Format``:   MIME Type or extension (HTML, JSON, XML, YAML, CSV, PDF...)<!-- break -->  
+``action``:   map the HTTP methods (POST, GET, PUT and DELETE) to resource methods
+
+If a resource is defined, Merb uses the ``URI`` and the the HTTP method to pick
+a controller and an action.
+
+----
+
+**TECHNICAL REVIEW IN PROGRESS, PLEASE DO NOT TRANSLATE**
+
+
+### The Default Routing Style
 
 When a new application is generated, the router contains a single default route
-which maps URL Paths (#is this the right name) to Controllers like this:
+which maps URL Paths <!-- is this the right name --> to Controllers like this:
 
     /:controller/:action/:id(.:format)
 
@@ -62,7 +238,7 @@ The REST philosophy is to view every web request as a request to retrieve(GET),
 create (POST), change(PUT), or remove(DELETE) some resource
 over which the server is keeping track.
 There are a number of benefits to this model.
-(#we need achapter on resources)
+<!-- we need a chapter on resources -->
 Among them are clean URI name spaces,
 well organized interaction between Models and Controllers,
 and performance.
@@ -195,13 +371,17 @@ having multiple ways to view a resource
 or needing more then one form to create or edit a resource.
 These methods must be passed as option to the 'resources' declaration in the
 router.
-(Please seeAPI documentation)
+(Please see API documentation)
 
 There are also circumstances where it is not necessary to use all the methods.
 Perhaps no on is allowed to delete a resource,
 or the show page contains a form to edit the resource already.
 In these cases,
 simply not providing the method will prevent it from being called.
+
+##Using merb-gen With Controllers
+
+TODO -- need to mention both normal controllers and resources
 
 ##Controller Action Methods
 
@@ -251,7 +431,7 @@ Both of these file would have the @post variable available to them.
 Also note that render was the last item in the method.
 Ruby automatically returns the last value in a method
 as the return value for that method.
-(#can anyone be clearer here?)
+<!-- can anyone be clearer here? -->
 
 The 'display' method does everything the render method does
 but goes a step further.
@@ -268,11 +448,11 @@ eg:
     end
 {:lang=ruby html_use_syntax=true}
 
-Here, we might render the same templates as before, in responce to a request
+Here, we might render the same templates as before, in response to a request
 for HTML.
 But, if this method was marked as providing XML(see format below for how)
 and there was no XML template,
-then the display method would instead call @post.to_xml
+then the display method would instead call ``@post.to_xml``
 and return the result.
 
 There are many other options for both of these methods.
@@ -280,24 +460,191 @@ Developers should consult the API Documentation for both of them.
 
 ###Interaction with Model
 
-###The Three Hashes: params, session and request
+Most action methods will want to interact with Model.
+How this is done will depend on the ORM used.
+Records returned from the model should be stored in instance variables
+(these begin with an '@') so they can be used by the Views.
+
+While we cannot antisipate all circumstances,
+the need to use more then two or three Model methods is often a sign
+that more functionality need to be added to the model layer.
+If the same Model class is being called repeatedly,
+moving that login into a new method for that class is a good way to refactor.
+When more then two or three Model classes are needed by a controller,
+ether rework the controller to match your models more closely,
+or create a presentor model that encapisolates these relationships.
+
+Merb can handle many of the exceptions thrown by ORM with 404 pages.
+It is a good practice howevever to catch exceptions from the Model layer,
+and give the user a better discription of the problem.
+
+###Information From the Request: The 'params' and 'request' Hashes
+
+The controller has access to two hashes that are formed out of the request.
+
+The params hash contains:
+
+* The controller and action the router decided on.
+* A hash of any Post or Query data sent by the client.
+  (this is where the data from forms ends up)
+* Other elements from the URI parsing, such as :id
+  (please see the chapter on the [Router][] for more information
+
+The request hash contains information from the HTML request and the envrionment.
+Normally, Merb will translate the infromation here into an easier to use form
+for you, but that is not always sufficient.
+
+###Persistant Information About the Client: Sessions and Cookies
+
+HTTP is a stateless protocol.
+That means that each request stands on its own,
+and there is no way to keep information between calls.
+For web applications it is convient to simulate a persistant state.
+Cookies are used to idintify clients.
+They can be used through the cookies hash in the controller.
+
+However, there is an easier and more flexible way to give an app the illusion
+that there is a persistant state that follows a client around.
+The session hash persists between different requests from the same client.
+There are a number of different ways to maintain sessions,
+which we will not go into here.
+The result is the same however.
+Any object that is stored into the session will still be there the next time
+the user makes a request.
+
+Sessions can be use to store user credentials.
+Indeed it is the session that Merb-Auth is authintication.
+Sessions can be used to store error messages after a redirect.
+It can also store information about the steps completed in a multi-step
+process.
+eg.
+
+    class Users < Application
+      def login
+        if login_was_successful
+          #make sure that when the user reaches the home page we can remember
+          #who they were.
+          session[:user] = User.current_user
+          redirect url(:home)
+        else
+          #Provide a message telling the user why ther are back at the login
+          #screen.
+          session[:error_message] = "Could not log you in please try again."
+          redirect url(:login)
+        end
+      end
+    end
+{:lang=ruby html_use_syntax=true}
+
+Developers coming from rails will note that there is not 'flash' hash in merb.
+Instead Sessions can be used directly to send messages between pages.
 
 ###Redirecting
 
+Instead of sending a page back to the browser,
+a server can ask the browser to go to a different page for information.
+In Merb, this is often done in response to a request to modify a resource
+through a POST, PUT, or DELETE request.
+
+To accomplish this the server sends the client a specially formatted response,
+usually without any body.
+Merb will create these responses for you with the [redirect][] function.
+eg.
+
+    class Posts < Application
+      def update(id)
+        post = Post.get(id)
+        if post.update_attributes(params[:post])
+          redirect resource(post) #show the client the updated post
+        else
+          session[:errors] = post.errors
+
+          #send the client back to the edit page so they can fix the errors.
+          redirect resource(:edit, post)
+        end
+      end
+    end
+    #
+    #NOTE: The resource method in the example above returns a URI.  It is
+    #      simular to the url method.
+{:lang=ruby html_use_syntax=true}
+
+
+
 ###Exceptions and Status Codes
 
-###Cookies
+TODO -- How does merb deal with exceptions
+
+In addation to raising exceptions,
+Merb can set the status code directly using the 'status=' method.
+eg.
+
+    class Posts < Application
+      def update(id)
+        unless params[:post]
+          status = 401 #tell the client we could not understand the request.
+          return render("We could not seem to find the content of modified post",
+              :layout=>'error')
+        end
+        post = Post.get(id)
+        post.update_attributes(params[:post])
+        redirect resource(post) #show the client the updated post
+      end
+    end
+{:lang=ruby html_use_syntax=true}
 
 ##Extending Controllers
 
+In this section, we will look at the Controller classes
+and how to use them to fine tune the behavior of an application.
+
 ###Formats
+
+TODO - What formats are, How do we determin the format of a
+request(.format || accept-format header), using provides, generating differnt
+formats, examples.  Mention the value of RESTful controllers and web services.
 
 ###Before and After Filters
 
+TODO -- about filter, creating filters, order of exicution, breaking out of
+the filter chain, returning or modifying the responce in a filter, examples.
+
 ###Use of 'Application'
+
+The default stack for the merb app as well as the controller generators make
+all their controllers inherit from Application.
+Developers can take advantage of this by putting methods
+in the application class.
+These methods will then be available to all controllers.
+
+The application class can also set before and after filters that will be run
+for all controllers.
+
+The Application class is defined in the file, "app/controllers/application.rb"
 
 ###Private Methods
 
-[MVC]:    /getting-started/mvc
-[Router]: /getting-started/router
-[MVC]:    /getting-started/view
+It is best to refactor as much logic out of the controller as possible.
+When the controller does need to have more complex logic in it,
+it should be placed in private methods.
+This keeps action methods cleaner and easier to test an debug.
+It is important to make these methods private
+because public methods can be invoked by the router by default.
+This can be a security hole.
+
+[MVC]:          /getting-started/mvc
+[redirect]: http://merbivore.com/documentation/1.0/doc/rdoc/merb-core-1.0/index.html?a=M000529&name=redirect
+[Representational State Transfer]:         http://en.wikipedia.org/wiki/Representational_State_Transfer
+[resources]:  http://en.wikipedia.org/wiki/Representational_State_Transfer#REST.27s_central_principle:_resources
+[REST]:             http://en.wikipedia.org/wiki/Representational_State_Transfer
+[RESTful]:          http://en.wikipedia.org/wiki/Representational_State_Transfer#RESTful_Web_services
+[Router]:           /getting-started/router
+[Roy Fielding]:     http://en.wikipedia.org/wiki/Roy_Fielding]
+[Trygve Reenskaug]: http://en.wikipedia.org/wiki/Trygve_Reenskaug
+[View]:             /getting-started/view
+
+[^rest\_intro]: Chapter 5 of Fielding’s dissertation is ["Representational State Transfer (REST)"](http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
+[^mvc-essay]:   http://heim.ifi.uio.no/~trygver/1979/mvc-2/1979-12-MVC.pdf
+
+*[REST]:    Representational state transfer
+*[HTTP]:    Hypertext Transfer Protocol

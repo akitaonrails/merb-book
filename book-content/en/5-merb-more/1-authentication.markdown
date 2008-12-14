@@ -90,7 +90,7 @@ By default it also include the form based password logins and basic authenticati
 
 By default the slice will load the password\_form and the basic\_auth strategies
 
-Views and strategies can be customized as exlained in the
+Views and strategies can be customized as explained in the
 Authenticated Hello World example.
 
 
@@ -276,10 +276,10 @@ Now that you added these helpers, you just need to slightly modify your examples
 
 In the above example, the request sent to the articles URI will be authenticated.
 
-[Adam French]:      <http://adam.speaksoutofturn.com>
-[merb-auth]:        <http://github.com/wycats/merb/tree/master/merb-auth>
-[merb-auth-core]:   <http://github.com/wycats/merb/tree/master/merb-auth/merb-auth-core>
-[merb-auth-more]:   <http://github.com/wycats/merb/tree/master/merb-auth/merb-auth-more
-[merb-auth-slice-password]: <http://github.com/wycats/merb/tree/master/merb-auth/merb-auth-slice-password>
+[Adam French]:      http://adam.speaksoutofturn.com
+[merb-auth]:        http://github.com/wycats/merb/tree/master/merb-auth
+[merb-auth-core]:   http://github.com/wycats/merb/tree/master/merb-auth/merb-auth-core
+[merb-auth-more]:   http://github.com/wycats/merb/tree/master/merb-auth/merb-auth-more
+[merb-auth-slice-password]: http://github.com/wycats/merb/tree/master/merb-auth/merb-auth-slice-password
 
 *[API]: Application Programming Interface

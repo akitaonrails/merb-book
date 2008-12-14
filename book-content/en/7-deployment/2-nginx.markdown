@@ -2,8 +2,10 @@
 ![Nginx](/images/nginx-header.jpg){: .no-border}
 
 **Reference website:**
-[http://wiki.codemongers.com/Main][]{: .reference}
+<http://wiki.codemongers.com/Main>{: .reference}
 
+* This will become a table of contents (this text will be scraped).
+{:toc}
 
 [Nginx][] (pronounced "engine x") is a free, open-source,
 high-performance HTTP server and [reverse proxy][],
@@ -195,7 +197,6 @@ To monitor the Merb master process and workers, you need to add this configurati
       group merb_app
       
 
-[http://wiki.codemongers.com/Main]:     http://wiki.codemongers.com/Main
 [Igor Sysoev]:                          http://sysoev.ru/en/
 [Nginx]:                                http://wiki.codemongers.com/Main
 [proxy server]: http://en.wikipedia.org/wiki/Proxy_server
