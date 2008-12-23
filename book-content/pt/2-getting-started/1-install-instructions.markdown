@@ -1,4 +1,8 @@
-# Começando
+# Instruções para instalação
+
+* Isto irá virar o índice (este texto será removido).
+{:toc}
+
 Você precisará instalar o Merb para usar o framework.
 Entretanto, antes de instalar o Merb,
 você precisará ter instalado um compilador C, o Ruby e o [RubyGems][],
@@ -56,7 +60,7 @@ Uma maneira é fazer download dos binários do Ruby, instalá-los, e então inst
 o RubyGems.
 
 Uma alternativa é usar o [One-Click Ruby Installer][]
-que já vem com o RubyGems (e algumas outras coisas). Se você usar
+que já vem com o RubyGems (além de outras coisas). Se você usar
 o One-Click Installer, tenha certeza de habilitar a caixa 'Enable RubyGems' no
 assistente de instalação.
 
