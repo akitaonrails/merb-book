@@ -1,13 +1,14 @@
-#Integration testing with Cucumber
+#Testes de integração com o Cucumber
 
-* This will become a table of contents (this text will be scraped).
+* Isto irá virar o índice (este texto será removido).
 {:toc}
 
-[Cucumber][] is the preferred method for integration testing your Merb
-applications.
-Cucumber is a tool that can execute "feature documentation"
-written in plain text.
-Here is an example of a typical Cucumber feature:
+O [Cucumber][] é a melhor opção para realizar os testes de integração das suas
+aplicações Merb.
+Cucumber é uma ferramenta que pode executar "documentação de funcionalidades"
+escritas em texto comum.
+Aqui está um exemplo de uma especificação funcional (feature) típica no
+Cucumber:
 
     Feature: Login
       To ensure the safety of the application
@@ -23,41 +24,41 @@ Here is an example of a typical Cucumber feature:
         Then the login request should fail
         Then I should see an error message
 
-## Merb and Cucumber
+## Merb e Cucumber
 
-In order to use Cucumber with Merb,
-you need to install the [merb\_cucumber][] plugin.
-To install the plugin, run the command
+Para usar o Cucumber com o Merb, você precisa instalar o plugin
+[merb\_cucumber][].
+Para instalar o plugin, execute o comando
 
     $ sudo gem install merb_cucumber
 
-or, if you're using the local gems directory, run
+ou, se você está usando o diretório de gems local, execute
 
     $ thor merb:gem:install merb_cucumber
 
-Then, inside of your merb project root, run
+Depois, na raiz do seu projeto merb, execute
 
     $ merb-gen cucumber
 
-Or, to install with [Webrat][] support, run
+Ou, para instalar com suporte ao [Webrat][], execute
 
     $ merb-gen cucumber --session-type webrat
 
-This will also install the login feature shown above.
-This should pass if you’re using merb-auth.
+Isto também irá instalar a feature login mostrada acima.
+Este teste deverá passar se você estiver usando merb-auth.
 
-Running your features is then as simple as running
+Executando suas features é muito simples. Basta executar
 
     $ rake features
 
-## Creating new features
+## Criando novas features
 
-To add a new feature definition to your Merb application, run
+Para adicionar a definição de uma nova feature na sua aplicação Merb, execute
 
     $ merb-gen feature FEATURE_NAME
 
-This will create a new feature named FEATURE\_NAME.feature in the features
-directory that looks like this:
+Uma nova feature chamada FEATURE\_NAME.feature será criada no diretório
+features. Ela se parecerá com isto:
 
     Feature: add comment
       To [accomplish some goal]
@@ -80,10 +81,10 @@ directory that looks like this:
           Then [outcome]
           And [another outcome]
 
-If you then run your features from the command line,
-you'll see that Cucumber gives you hints about how to implement each step.
-More information about implementing Cucumber features can be found
-on the [Cucumber wiki].
+Se você executar suas features a partir da linha de comando, você verá que o
+Cucumber irá mostrar dicas sobre como implementar cada passo. Mais informações
+sobre a implementação de features no Cucumber podem ser encontradas no
+[Cucumber wiki].
 
 <!-- Links -->
 [Cucumber]:         http://github.com/aslakhellesoy/cucumber/wikis/home

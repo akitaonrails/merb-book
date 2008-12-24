@@ -1,5 +1,8 @@
 #Models
 
+* Isto irá virar o índice (este texto será removido).
+{:toc}
+
 Genericamente falando, models são uma representação programática dos conceitos e
 dados utilizados por uma aplicação. Numa aplicação de blog, seriam coisas como
 posts, comentários e usuários. Em uma loja eles poderiam ser produtos, clientes,
@@ -10,14 +13,15 @@ qualquer coisa que o desenvolvedor possa representar através de classes Ruby.
 Tendo dito isto, a grande maioria das aplicações utilizará algum tipo de [ORM][]
 (do inglês Object Relational Mapper - Mapeamento Objeto Relacional) para
 persistir dados entre requisições, e a maioria irá armazenar seus dados em algum
-banco de dados. Por default, o Merb utiliza o DataMapper comunicando-se com um
-banco de dados SQLite. Esta é uma excelente escolha para facilitar o
+banco de dados. Por default, o Merb utiliza o [DataMapper][] comunicando-se com
+um banco de dados [SQLite][]. Esta é uma excelente escolha para facilitar o
 desenvolvimento de novos projetos.
 
 Uma vez em produção, entretanto, geralmente é recomendado que os desenvolvedores
 façam a transição para um dos engines de banco de dados mais poderosos como o
-Postgres ou MySQL. Projetos que estejam vindo do mundo Rails podem querer manter
-seus models ActiveRecord, e o Merb também irá suportar esta configuração.
+[PostgreSQL][] ou [MySQL][]. Projetos que estejam vindo do mundo Rails podem
+querer manter seus models ActiveRecord, e o Merb também irá suportar esta
+configuração.
 
 O resto deste capítulo irá focar no uso do DataMapper para criar classes de
 Models.
@@ -25,7 +29,7 @@ Models.
 ## Atributos
 
 Em um modelo do DataMapper, os atributos são definidos com o método
-``propriedade``. Este método recebe o nome do atributo, um tipo de dado, e um
+``property``. Este método recebe o nome do atributo, um tipo de dado, e um
 hash de opções. Ao contrário deo ActiveRecord, um modelo DataMapper não precisa
 de arquivos de migration separados (apesar das migrations serem suportadas).
 Veja o exemplo de um model DataMapper típico:
@@ -172,9 +176,15 @@ Você também pode passar um bloco:
 Você pode definir callback para essencialmente qualquer método, incluindo
 métodos de classe. Para mais detalhes, veja a página [hooks][] do DataMapper.
 
-[ORM]:             http://en.wikipedia.org/wiki/Object-relational_mapping
-[properties]:      http://datamapper.org/doku.php?id=docs:properties
-[validations]:     http://datamapper.org/doku.php?id=docs:validations
-[associations]:    http://datamapper.org/doku.php?id=docs:associations
+<!-- Links -->
+[ActiveRecord]:    http://en.wikipedia.org/wiki/ActiveRecord_%28Rails%29
 [aspect-oriented]: http://en.wikipedia.org/wiki/Aspect_oriented
+[associations]:    http://datamapper.org/doku.php?id=docs:associations
+[DataMapper]:      http://datamapper.org/doku.php
 [hooks]:           http://datamapper.org/doku.php?id=docs:hooks
+[MySQL]:           http://en.wikipedia.org/wiki/MySQL
+[ORM]:             http://en.wikipedia.org/wiki/Object-relational_mapping
+[PostgreSQL]:      http://en.wikipedia.org/wiki/PostgreSQL
+[properties]:      http://datamapper.org/doku.php?id=docs:properties
+[SQLite]:          http://www.sqlite.org/
+[validations]:     http://datamapper.org/doku.php?id=docs:validations
