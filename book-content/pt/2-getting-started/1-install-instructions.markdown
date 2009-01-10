@@ -82,9 +82,10 @@ fazer download e instalá-lo separadamente. Mais informações podem ser
 encontradas no site do [SQLite][].
 
 
+<!-- Links -->
 [Apple developer website]:  http://developer.apple.com/technology/xcode.html
-[RubyGems]:                 http://www.rubygems.org/
-[Ubuntu]:                   http://www.ubuntu.com/
-[RedHat]:                   http://www.redhat.com/
 [One-Click Ruby Installer]: http://rubyinstaller.rubyforge.org/wiki/wiki.pl
+[RedHat]:                   http://www.redhat.com/
+[RubyGems]:                 http://www.rubygems.org/
 [SQLite]:                   http://www.sqlite.org/
+[Ubuntu]:                   http://www.ubuntu.com/

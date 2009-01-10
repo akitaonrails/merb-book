@@ -17,5 +17,5 @@ de model, request e integração.
 
 
 <!-- Links -->
-[regressão]:         http://pt.wikipedia.org/wiki/Teste_de_regress%C3%A3o
+[regressão]:          http://pt.wikipedia.org/wiki/Teste_de_regress%C3%A3o
 [RSpec]:              http://rspec.info/
