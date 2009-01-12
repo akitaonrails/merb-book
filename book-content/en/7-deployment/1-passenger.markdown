@@ -1,9 +1,12 @@
-#Passenger
+# Passenger
 
 ![Phusion Passenger](/images/phusion_banner.png){: .no-border}
 
 **Reference website:**
-[http://www.modrails.com/documentation/Users%20guide.html][]{: .reference}
+<http://www.modrails.com/documentation/Users%20guide.html>{: .reference}
+
+* This will become a table of contents (this text will be scraped).
+{:toc}
 
 [Phusion Passenger][] is an Apache module for deploying [Rack][] applications.
 Because Merb is built on Rack,
@@ -19,7 +22,7 @@ alongside a version of Ruby you currently have installed,
 as it will be installed into the <tt>/opt</tt> directory.
 
 *Note:*
-You will need to have the development <tt>readline</tt> libraries installed
+You will need to have the development ``readline`` libraries installed
 if you want run Merb interactively.
 
 ### Download REE
@@ -71,8 +74,7 @@ into your Merb application's root directory:
 ## Capistrano Task
 
 
-[http://www.modrails.com/documentation/Users%20guide.html]:  http://www.modrails.com/documentation/Users%20guide.html
+<!-- Links -->
 [Phusion Passenger]:          http://www.modrails.com/
 [Rack]:                       http://rack.rubyforge.org/
 [Ruby Enterprise Edition]:    http://www.rubyenterpriseedition.com/
-
