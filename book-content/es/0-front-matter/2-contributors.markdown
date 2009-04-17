@@ -1,6 +1,7 @@
 # Colaboradores
 
-Sin la ayuda de los siguientes colaboradores este libro no hubiese sido posible. Gracias a todos!
+Sin la ayuda de los siguientes colaboradores este libro no hubiese sido posible.
+Gracias a todos!
 
 **En order alfabético:**
 
@@ -12,7 +13,7 @@ Sin la ayuda de los siguientes colaboradores este libro no hubiese sido posible.
 * [Yehuda   Katz        ](http://yehudakatz.com)
 * [Makoto   Kuwata      ](http://www.kuwata-lab.com/)
 * [Rich     Morin       ](http://cfcl.com/rdm)
-* [Carlo    Pecchia	](http://carlopecchia.eu)
+* [Carlo    Pecchia		](http://carlopecchia.eu)
 * [Markus   Prinz       ](http://blog.nuclearsquid.com/)
 * [Foy      Savas       ](http://foysavas.com/)
 * [Kurt     Schrader    ](http://kurt.karmalab.org/)

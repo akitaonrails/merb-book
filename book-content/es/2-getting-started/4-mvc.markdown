@@ -1,13 +1,68 @@
 #MVC
 
-MVC is an acronym that stand for Model, View, Controller.  It describe a form of web-application structuring that is easy to test and maintain because it separates business logic, server logic and content generation.  This is the structure of the standard Merb app the is generated for by the 'merb-gen app' command.  It is also the structure used by Rails, CakePHP, Django and many other popular web design tools.
+* Esto será una tabla de contenidos (este texto será pegado).
+{:toc}
 
-To develop in Merb effectively, it is important that one understand both how the structure works, and what the most effective way to work with it is.  This Chapter will discuss the overall framework; the following three chapter will look at each piece in detail.
+MVC es un acrónimo que significa "Modelo, Vista, Controlador".
+Describe una manera de estructurar una aplicación web 
+que es fácil de probar y mantener
+debido a que separa la lógica de negocio, lógica de servidor y la generación de contenido.
+Esta es la estructura de una aplicación standard Merb 
+que es generada por el comando '``merb-gen app``'.
+Es también la estructura adoptada por [Rails][], [CakePHP][], [Django][],
+y muchas otras plataformas de desarrollo web populares.
 
-Models are the core of the framework.  They are responsible for the business logic of your application, and in Merb they are most often associated with database access through an ORM such as DataMapper or Active Record.  In some applications they are nothing more then a wrapper for a database table, but good developers will try to place as much in their model classes as possible describing relationships among various concepts and adding methods for any non-trivial piece of data retrieval or manipulation.
+Para desarrollar en Merb de una manera efectiva,
+es sumamente importante que uno entienda tanto el funcionamiento de una estructura MVC
+como la manera más apropiada de trabajar con ella.
+Este capítulo discutirá la plataforma en forma general;
+los siguientes tres capítulos examinarán cada pieza en detalle.
 
-Views are the glitzy outer shell of an application.  Views are responsible for generating the actual content returned by a request.  Most commonly Views are written in a templating format like eRB or Haml.  Wise developers will attempt to put as little code as possible into a View.
+Los [Modelos][] son el núcleo de la plataforma.
+Ellos son los responsables de la lógica de negocio de su aplicación;
+en Merb, son generalmente asociados con el acceso a la base de datos
+a través de un ORM tal como DataMapper o Active Record.
+Algunas veces los modelos son usados con un ORM,
+simplemente como un envoltorio para una tabla en la base de datos.
+No obstante es generalmente considerado una buena práctica tener modelos 'gordos'.
+Esto significa que usted debería mantener aspectos 
+tales como relaciones de datos y métodos
+para cualquier pieza no trivial de recuperación y manipulación de datos 
+dentro de las clases modelos.
 
-Controllers deal with taking an incoming request and turning it into a response.  They are responsible for interpreting the incoming request, getting instances of the needed Models, and passing this information along to the View.  Novice users are often tempted to add lots of code into the controller layer, but this leads to brittle and hard to test code.  Instead, developers are well advised to keep their controllers as 'skinny' as possible by pushing and code that does not directly relate to the request/response cycle or the gathering of data into the Model.
+Las [Vistas][] son el ostentoso cascarón exterior de su aplicación.
+Son las responsables de generar el contenido real (HTML, XML, JSON)
+retornado por una petición.
+Generalmente, estas son escritas en un formato de plantillas
+tales como [Erb][] (Ruby embebido) o [Haml][].
+Aquellos desarrolladores lo suficientemente sabios intentarán incluir tan poco 
+código como sea posible dentro sus vistas.
 
-In the default Merb application, the code for all three of these pieces is found in folders under the 'app' directory.  In the next chapters we will look at how Merb implements each of these parts.
+Los [Controladores][] se encargan de recibir una petición entrante
+y de convertirla en una respuesta.
+Son responsables de interpretar la petición entrante,
+obtener instancias de los modelos necesarios,
+y pasar esta información a través de la vista.
+
+En una típica aplicación Merb,
+el código para todas estas tres partes se encuentra
+en directorios del mismo nombre dentro del directorio '``app``'.
+En los siguientes capítulos, examinaremos como Merb implementa cada una de estas partes.
+
+Los principiantes suelen estar tentados por agregar 
+mucho código dentro de la capa de controladores,
+que produce como consecuencia a un código frágil y difícil de probar.
+En cambio, se recomienda a los desarrolladores
+a mantener sus controladores tan 'ligeros' como sea posible
+poniendo el código que no está directamente relacionado con el ciclo petición/respuesta 
+(o la reunión de datos) dentro del modelo.
+
+[CakePHP]: http://www.cakephp.org/
+[Django]: http://www.djangoproject.com/
+[Rails]: http://rubyonrails.org
+[Erb]: http://en.wikipedia.org/wiki/ERuby
+[Haml]: http://haml.hamptoncatlin.com/
+[Controladores]: /getting-started/controllers
+[Modelos]: /getting-started/models
+[Vistas]: /getting-started/views
+
